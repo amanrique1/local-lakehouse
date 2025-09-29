@@ -1,0 +1,13 @@
+# docker-compose-system.yml
+# The master orchestrator for the entire data lakehouse system.
+
+# Includes the service definitions from the other files.
+include:
+  - docker-compose-lake.yaml
+  - docker-compose-trino.yaml
+
+# Defines and creates the shared network that all included services will use.
+networks:
+  data_lake_net:
+    name: data_lake_network # Explicitly names the Docker network
+    driver: bridge

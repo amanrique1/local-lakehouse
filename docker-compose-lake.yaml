@@ -1,0 +1,38 @@
+# Defines the data storage and cataloging services.
+
+services:
+  nessie-catalog:
+    platform: linux/amd64 # For compatibility with ARM-based machines (Apple Silicon, etc.)
+    image: projectnessie/nessie:0.76.6
+    container_name: nessie-catalog
+    ports:
+      - "19120:19120"
+    environment:
+      - QUARKUS_OIDC_ENABLED=false
+    networks:
+      - data_lake_net
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      MINIO_REGION_NAME: us-east-1
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: password
+    ports:
+      - "9000:9000" # S3 API
+      - "9001:9001" # Web Console
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    entrypoint: >
+      /bin/sh -c "
+      minio server /data --console-address ':9001' &
+      while ! curl -s http://localhost:9000/minio/health/live; do sleep 1; done;
+      mc alias set local http://localhost:9000 admin password;
+      mc mb local/local-lakehouse;
+      tail -f /dev/null"
+    networks:
+      - data_lake_net
