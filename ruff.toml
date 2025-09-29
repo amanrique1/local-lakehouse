@@ -1,0 +1,11 @@
+
+[lint]
+extend-select = [
+  "B",  # flake8-bugbear
+  "I",  # isort
+  "C4", # flake8-comprehensions
+  "ISC", # flake8-implicit-str-concat
+]
+
+[format]
+docstring-code-format = true
