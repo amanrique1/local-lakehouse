@@ -1,10 +1,145 @@
+default_language_version:
+  python: python3.11
+
 repos:
--   repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: v0.1.6
+  # =========================================================================
+  # RUFF - Python Linting & Formatting (Fast!)
+  # =========================================================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.13.3  # Use latest stable version (check: https://github.com/astral-sh/ruff/releases)
     hooks:
-        # Run the linter.
-        - id: ruff
-          args: [--fix]
-        # Run the formatter.
-        - id: ruff-format
+      # Run the linter with auto-fix
+      - id: ruff
+        name: ruff-lint
+        args:
+          - --fix
+          - --exit-non-zero-on-fix  # Fail if changes are made
+        types_or: [python, pyi]
+
+      # Run the formatter
+      - id: ruff-format
+        name: ruff-format
+        types_or: [python, pyi]
+
+  # =========================================================================
+  # STANDARD PRE-COMMIT HOOKS
+  # =========================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Filesystem checks
+      - id: check-added-large-files
+        args: ['--maxkb=5000']  # Prevent commits > 5MB
+      - id: check-case-conflict  # Check for filename case conflicts
+      - id: check-merge-conflict  # Check for merge conflict strings
+      - id: end-of-file-fixer  # Ensure files end with newline
+      - id: trailing-whitespace  # Trim trailing whitespace
+        args: [--markdown-linebreak-ext=md]  # Preserve Markdown line breaks
+
+      # Code quality checks
+      - id: check-ast  # Validate Python syntax
+      - id: check-builtin-literals  # Use [] instead of list()
+      - id: check-docstring-first  # Docstring before code
+      - id: debug-statements  # Check for debugger imports
+      - id: detect-private-key  # Prevent committing secrets
+
+      # JSON/YAML/TOML validation
+      - id: check-json
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-toml
+
+      # File format normalization
+      - id: mixed-line-ending
+        args: [--fix=lf]  # Force Unix line endings
+
+  # =========================================================================
+  # YAML LINTING (for docker-compose.yaml files)
+  # =========================================================================
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args:
+          - --config-data
+          - |
+            {
+              extends: default,
+              rules: {
+                line-length: {max: 120},
+                comments: {min-spaces-from-content: 1},
+                document-start: disable
+              }
+            }
+        files: \.(yaml|yml)$
+
+  # =========================================================================
+  # MARKDOWN FORMATTING
+  # =========================================================================
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.22
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-gfm>=0.3.5  # GitHub Flavored Markdown
+          - mdformat-tables>=0.4.1  # Better table formatting
+          - mdformat-simple-breaks>=0.0.1
+
+  # =========================================================================
+  # SQL FORMATTING (for dbt models)
+  # =========================================================================
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 3.4.2
+    hooks:
+      - id: sqlfluff-lint
+        name: sqlfluff-lint-dbt
+        entry: sqlfluff lint
+        language: python
+        args:
+          - --dialect=trino
+          - --ignore=parsing
+        files: ^dags/dbt_trino/models/.*\.sql$
+
+      - id: sqlfluff-fix
+        name: sqlfluff-fix-dbt
+        entry: sqlfluff fix
+        language: python
+        args:
+          - --dialect=trino
+          - --force
+        files: ^dags/dbt_trino/models/.*\.sql$
+
+  # =========================================================================
+  # DOCKERFILE LINTING
+  # =========================================================================
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.14.0
+    hooks:
+      - id: hadolint-docker
+        args: [--ignore, DL3008, --ignore, DL3009]  # Ignore pinning apt packages
+
+  # =========================================================================
+  # SECRETS DETECTION
+  # =========================================================================
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args:
+          - --baseline
+          - .secrets.baseline
+        exclude: package.lock.json
+
+# ============================================================================
+# CI/CD MODE (Skip hooks that modify files)
+# ============================================================================
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    for more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: []  # Don't skip any hooks
+  submodules: false

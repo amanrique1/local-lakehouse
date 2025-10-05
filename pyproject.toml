@@ -1,18 +1,85 @@
-[project]
+[tool.poetry]
 name = "local-lakehouse"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "Andres Manrique",email = "andress0199@outlook.com"}
-]
+description = "Modern data lakehouse with Airflow, dbt, Trino, Nessie, Iceberg, and MinIO"
+authors = ["Andres Manrique <a.manrique@uniandes.edu.co>"]
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "ruff (>=0.13.2,<0.14.0)",
-    "pre-commit (>=4.3.0,<5.0.0)"
-]
+packages = [{include = "dags"}]
 
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+# Core development tools
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+mypy = "^1.8.0"
+ruff = "^0.13.2"
+pre-commit = "^4.3.0"
+
+# Pre-commit hook dependencies (for running hooks locally)
+yamllint = "^1.37.0"
+sqlfluff = "^3.4.0"
+detect-secrets = "^1.5.0"
+mdformat = "^0.7.17"
+mdformat-gfm = "^0.3.5"
+mdformat-tables = "^0.4.1"
+mdformat-simple-breaks = "^0.0.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+# ============================================================================
+# PYTEST CONFIGURATION
+# ============================================================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--cov=dags",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+
+# ============================================================================
+# MYPY CONFIGURATION (Type Checking)
+# ============================================================================
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Set to true for stricter type checking
+ignore_missing_imports = true  # Ignore missing stubs for third-party libraries
+
+[[tool.mypy.overrides]]
+module = "airflow.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "dbt.*"
+ignore_missing_imports = true
+
+# ============================================================================
+# COVERAGE CONFIGURATION
+# ============================================================================
+[tool.coverage.run]
+source = ["dags"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/dbt_trino/target/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

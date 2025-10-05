@@ -1,0 +1,15 @@
+# Set the line wrap length
+wrap = 120
+
+# Use consecutive numbering for ordered lists (e.g., 1., 2., 3.)
+number = true
+
+# Maintain "lf" as the end-of-line character
+end_of_line = "lf"
+
+# Enable all desired plugins
+extensions = [
+  "gfm",
+  "tables",
+  "simple_breaks",
+]

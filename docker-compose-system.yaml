@@ -1,4 +1,3 @@
-# docker-compose-system.yml
 # The master orchestrator for the entire data lakehouse system.
 
 # Includes the service definitions from the other files.

@@ -3,7 +3,7 @@
 services:
   nessie-catalog:
     platform: linux/amd64 # For compatibility with ARM-based machines (Apple Silicon, etc.)
-    image: projectnessie/nessie:0.76.6
+    image: projectnessie/nessie:${NESSIE_VERSION:-0.76.6}
     container_name: nessie-catalog
     ports:
       - "19120:19120"
@@ -13,12 +13,12 @@ services:
       - data_lake_net
 
   minio:
-    image: minio/minio
+    image: minio/minio:${MINIO_VERSION:-latest}
     container_name: minio
     environment:
       MINIO_REGION_NAME: us-east-1
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: password
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-admin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-password}
     ports:
       - "9000:9000" # S3 API
       - "9001:9001" # Web Console
@@ -31,8 +31,8 @@ services:
       /bin/sh -c "
       minio server /data --console-address ':9001' &
       while ! curl -s http://localhost:9000/minio/health/live; do sleep 1; done;
-      mc alias set local http://localhost:9000 admin password;
-      mc mb local/local-lakehouse;
+      mc alias set local http://localhost:9000 ${MINIO_ROOT_USER:-admin} ${MINIO_ROOT_PASSWORD:-password};
+      mc mb local/local-lakehouse || true;
       tail -f /dev/null"
     networks:
       - data_lake_net
