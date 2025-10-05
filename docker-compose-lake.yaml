@@ -32,7 +32,7 @@ services:
       minio server /data --console-address ':9001' &
       while ! curl -s http://localhost:9000/minio/health/live; do sleep 1; done;
       mc alias set local http://localhost:9000 ${MINIO_ROOT_USER:-admin} ${MINIO_ROOT_PASSWORD:-password};
-      mc mb local/local-lakehouse || true;
+      mc mb local/local-lakehouse;
       tail -f /dev/null"
     networks:
       - data_lake_net

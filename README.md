@@ -66,6 +66,8 @@ Modern data lakehouse environment combining **Airflow orchestration**, **dbt tra
 
 ## 🏗️ Architecture
 
+![Architecture Diagram](./assets/architecture.png)
+
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │                     ORCHESTRATION LAYER                        │
@@ -195,7 +197,7 @@ local_lakehouse/
 ├── 📄 ruff.toml                       # Linting rules
 │
 ├── 🖼️ assets/                         # Static assets
-│   └── dataflow.png                   # Data flow diagram
+│   └── ...
 │
 ├── 🎯 dags/                           # Airflow DAGs
 │   ├── dbt_dag.py                     # Main orchestration DAG
