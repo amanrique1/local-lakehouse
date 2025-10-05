@@ -177,16 +177,25 @@ Modern data lakehouse environment combining **Airflow orchestration**, **dbt tra
 local_lakehouse/
 ├── 🐳 docker-compose-airflow.yaml     # Airflow services
 ├── 🐳 docker-compose-lake.yaml        # MinIO + Nessie
-├── 🐳 docker-compose-system.yam       # Orchestrator
+├── 🐳 docker-compose-system.yaml      # Orchestrator
 ├── 🐳 docker-compose-trino.yaml       # Trino coordinator + workers
 ├── 🐳 Dockerfile                      # Custom Airflow image
 │
-├── 📄 pyproject.toml                  # Python project config
-├── 📄 ruff.toml                       # Linting rules
+├── 📄 .env.example                    # Example environment variables
+├── 📄 .gitignore                      # Git ignore file
+├── 📄 .mdformat.toml                  # Markdown formatter configuration
 ├── 📄 .pre-commit-config.yaml         # Pre-commit hooks
+├── 📄 .secrets.baseline               # Baseline for secrets
 ├── 📄 Makefile                        # CLI commands
+├── 📄 poetry.lock                     # Poetry lock file
+├── 📄 pyproject.toml                  # Python project config
+├── 📄 README.md                       # This file
 ├── 📄 requirements-airflow.txt
 ├── 📄 requirements-dbt.txt
+├── 📄 ruff.toml                       # Linting rules
+│
+├── 🖼️ assets/                         # Static assets
+│   └── dataflow.png                   # Data flow diagram
 │
 ├── 🎯 dags/                           # Airflow DAGs
 │   ├── dbt_dag.py                     # Main orchestration DAG
