@@ -39,9 +39,15 @@ manifest.json
 run_results.json
 compiled/
 run/
+profiles.yml
 
-# dbt profiles (if contains credentials)
-# profiles.yml
+# ============================================================================
+# Nessie
+# ============================================================================
+.nessie/
+user.yml
+.user.yml
+**/user.yml
 
 # ============================================================================
 # Testing & Code Quality
