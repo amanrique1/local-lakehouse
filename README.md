@@ -346,8 +346,8 @@ Wait 1-2 minutes for all services to initialize.
 
 | Service           | URL                      | Credentials                                               |
 | ----------------- | ------------------------ | --------------------------------------------------------- |
-| **Airflow**       | <http://localhost:8080>  | `admin` / `admin`                                         |
-| **Trino**         | <http://localhost:8081>  | No auth                                                   |
+| **Airflow**       | <http://localhost:8081>  | `admin` / `admin`                                         |
+| **Trino**         | <http://localhost:8080>  | No auth                                                   |
 | **MinIO Console** | <http://localhost:9001>  | See `.env` file (`MINIO_ROOT_USER`/`MINIO_ROOT_PASSWORD`) |
 | **Nessie**        | <http://localhost:19120> | No auth                                                   |
 
@@ -657,8 +657,8 @@ curl http://localhost:19120/api/v1/trees
 # Debug dbt connection
 make dbt-debug
 
-# Check profiles.yml
-cat dags/dbt_trino/profiles.yml
+# Check profiles.yaml
+cat dags/dbt_trino/profiles.yaml
 
 # Verify Trino is accessible
 docker exec -it trino-coordinator trino --execute "SHOW CATALOGS"

@@ -83,6 +83,10 @@ select = [
 
 # Disable specific rules that are too strict or conflict with Airflow patterns
 ignore = [
+
+    # String handling rules
+    "G004", # Use % formatting in logging functions (conflicts with f-strings)
+
     # Docstring rules (adjust based on your documentation standards)
     "D100",  # Missing docstring in public module
     "D104",  # Missing docstring in public package
@@ -102,6 +106,10 @@ ignore = [
     # Pylint rules that are too strict
     "PLR0913",  # Too many arguments to function call
     "PLR2004",  # Magic value used in comparison
+
+    # Indentation rules
+    "W191",  # Indentation contains tabs (if using tabs for indentation)
+    "D206",  # Docstring should be indented (conflicts with tab indentation)
 ]
 
 # ============================================================================

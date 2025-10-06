@@ -141,9 +141,9 @@ start: ## Start all Docker services
 	@echo "$(GREEN)Starting Local Lakehouse services...$(NC)"
 	docker-compose -f $(COMPOSE_FILE) up -d
 	@echo "$(GREEN)✓ Services started$(NC)"
-	@echo "$(YELLOW)Airflow UI:$(NC) http://localhost:8080"
+	@echo "$(YELLOW)Airflow UI:$(NC) http://localhost:8081"
 	@echo "$(YELLOW)MinIO UI:$(NC)   http://localhost:9001"
-	@echo "$(YELLOW)Trino UI:$(NC)   http://localhost:8081"
+	@echo "$(YELLOW)Trino UI:$(NC)   http://localhost:8080"
 
 stop: ## Stop all Docker services
 	@echo "$(YELLOW)Stopping Local Lakehouse services...$(NC)"

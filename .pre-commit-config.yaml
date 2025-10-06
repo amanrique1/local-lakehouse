@@ -68,7 +68,10 @@ repos:
               rules: {
                 line-length: {max: 120},
                 comments: {min-spaces-from-content: 1},
-                document-start: disable
+                document-start: disable,
+                empty-lines: {max: 2, max-start: 0, max-end: 1},
+                new-line-at-end-of-file: enable,
+                new-lines: {type: unix}
               }
             }
         files: \.(yaml|yml)$

@@ -4,6 +4,7 @@
 include:
   - docker-compose-lake.yaml
   - docker-compose-trino.yaml
+  - docker-compose-airflow.yaml
 
 # Defines and creates the shared network that all included services will use.
 networks:

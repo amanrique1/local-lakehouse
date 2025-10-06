@@ -1,5 +1,115 @@
-.env
-.ruff_cache/
+# ============================================================================
+# Python
+# ============================================================================
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# ============================================================================
+# Airflow
+# ============================================================================
+.env
+config/
+logs/
+target/
+plugins/
+airflow.db
+airflow.cfg
+webserver_config.py
+airflow-worker.pid
+airflow-scheduler.pid
+
+# ============================================================================
+# dbt
+# ============================================================================
+target/
+dbt_packages/
+dbt_modules/
+*.log
+
+# dbt cache files (in case they leak outside target/)
+graph.gpickle
+partial_parse.msgpack
+manifest.json
+run_results.json
+compiled/
+run/
+
+# dbt profiles (if contains credentials)
+# profiles.yml
+
+# ============================================================================
+# Testing & Code Quality
+# ============================================================================
 .pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+
+# ============================================================================
+# Jupyter Notebooks
+# ============================================================================
 .ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ============================================================================
+# IDEs & Editors
+# ============================================================================
+# VSCode
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+
+# Vim
+*.swp
+*.swo
+*~
+*.un~
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Emacs
+\#*\#
+.\#*
+
+# ============================================================================
+# Operating Systems
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+.Trash-*
+
+# ============================================================================
+# Misc
+# ============================================================================
+*.bak
+*.tmp
+*.temp
+.env.local
+.env.*.local
+secrets/
